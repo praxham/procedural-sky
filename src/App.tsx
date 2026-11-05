@@ -113,20 +113,20 @@ function App() {
     return match?.gradient || "#000000";
   };
 
-  const remapedSunPosition = (timeOfDay: number): number => {
-    if (timeOfDay <= 6 || timeOfDay >= 19) {
-      return 0;
-    }
+  // const remapedSunPosition = (timeOfDay: number): number => {
+  //   if (timeOfDay <= 6 || timeOfDay >= 19) {
+  //     return 0;
+  //   }
 
-    if (timeOfDay <= 12) {
-      const fraction = timeOfDay / 6;
-      return fraction * 50;
-    }
+  //   if (timeOfDay <= 12) {
+  //     const fraction = timeOfDay / 6;
+  //     return fraction * 50;
+  //   }
 
-    const fraction = (19 - timeOfDay) / 7;
+  //   const fraction = (19 - timeOfDay) / 7;
 
-    return fraction * 50;
-  };
+  //   return fraction * 50;
+  // };
 
   // const getSunGradient = (timeOfDay = 12) => {
   //   const time = Math.max(0, Math.min(24, timeOfDay));
