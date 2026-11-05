@@ -53,7 +53,7 @@ const boxShadows = (max: number, isSunsetOrSunrise: boolean) => {
   for (let i = 0; i < max; ++i) {
     ret.push(`
       ${rn(1, 100)}vw ${rn(1, 100)}vh ${rn(20, 40)}vmin ${rn(1, 20)}vmin
-      ${isSunsetOrSunrise ? rs("#0385FF", "#53ACFF", "#CCE6FF") : rs("#0385FF00", "#53ACFF", "#CCE6FF", "#FFFFFF")}
+      ${isSunsetOrSunrise ? rs("#0385FF00", "#53ACFF", "#CCE6FF") : rs("#0385FF00", "#53ACFF", "#CCE6FF", "#FFFFFF")}
     `);
   }
   return ret.join(",");

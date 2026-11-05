@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 import CloudSheet from "./components/CloudSheet";
 
 const CACHE_KEY = "sky_simulation_cache";
@@ -13,6 +13,41 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [locationName, setLocationName] = useState("");
   // const [shouldShowSun, setShouldShowSun] = useState(false);
+  const [showInfo, setShowInfo] = useState(true);
+  const [isHovering, setIsHovering] = useState(false);
+
+  const isHoveringRef = useRef(isHovering);
+
+  useEffect(() => {
+    isHoveringRef.current = isHovering;
+  }, [isHovering]);
+
+  useEffect(() => {
+    let timeoutId: number;
+
+    const handleMouseMove = () => {
+      setShowInfo(true);
+
+      clearTimeout(timeoutId);
+
+      timeoutId = setTimeout(() => {
+        if (!isHoveringRef.current) {
+          setShowInfo(false);
+        }
+      }, 5000);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+
+    timeoutId = setTimeout(() => {
+      if (!isHoveringRef.current) setShowInfo(false);
+    }, 5000);
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      clearTimeout(timeoutId);
+    };
+  }, []);
 
   useEffect(() => {
     async function fetchWeather() {
@@ -161,12 +196,18 @@ function App() {
         />
       )} */}
 
-      <div className="p-6 absolute z-50 bg-white max-w-fit m-4 rounded-xl">
-        <h1 className="text-xl font-bold">Procedural Sky Simulation</h1>
+      <div
+        onMouseEnter={() => setIsHovering(true)}
+        onMouseLeave={() => setIsHovering(false)}
+        className={`p-6 absolute min-w-75 text-white  z-50 bg-gray-950/40 rounded-xl border-white/20 border max-w-fit m-4 transition-opacity duration-500 ease-in-out ${
+          showInfo ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      >
+        <h1 className="text-xl font-bold">Procedural Sky</h1>
         <p>Location: {locationName}</p>
-        {cloudDensity && (
+        {cloudDensity !== null && (
           <ul className="mt-2 text-sm">
-            <li>Cloud Density: {cloudDensity}%</li>
+            {!isNight && <li>Cloud Density: {cloudDensity}%</li>}
             <li>Time of Day: {timeOfDay}</li>
           </ul>
         )}
